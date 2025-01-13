@@ -1,8 +1,7 @@
 import { persist } from "zustand/middleware";
 import { create } from "zustand/react";
 
-import { users } from "@/db/users.ts";
-import { User } from "@/db/users.ts";
+import { users, User } from "@/db/users.ts";
 
 type Store = {
   currentUser: User | null
@@ -17,20 +16,31 @@ export const useAuthStore = create<Store>()(
       currentUser: null,
       isAuthenticated: false,
       login: async (user: User) => {
-        const isExistingUser = users.some(({ email, password }) => user.email === email && user.password === password);
+        return new Promise<void>((resolve, reject) => {
+          setTimeout(() => {
+            const isExistingUser = users.some(({ email, password }) => user.email === email && user.password === password);
 
-        if (isExistingUser) {
-          set({ isAuthenticated: true, currentUser: user });
-        } else {
-          set({ isAuthenticated: false, currentUser: null })
-        }
+            if (isExistingUser) {
+              set({ isAuthenticated: true, currentUser: user });
+              resolve();
+            } else {
+              set({ isAuthenticated: false, currentUser: null })
+              reject();
+            }
+          }, 1000)
+        })
       },
       logout: async () => {
-        set({ isAuthenticated: false, currentUser: null })
+        return new Promise<void>((resolve) => {
+          setTimeout(() => {
+            set({ isAuthenticated: false, currentUser: null })
+            resolve();
+          }, 1000)
+        })
       }
     }),
     {
-      name: 'food-storage', // name of the item in the storage (must be unique)
+      name: 'food-storage',
     },
   ),
 )

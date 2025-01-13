@@ -1,6 +1,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useEffect } from "react";
 import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom";
 import { z } from "zod"
 
 import { Button } from "@/components/ui/button"
@@ -10,6 +12,7 @@ import { Input } from "@/components/ui/input"
 
 import { useAuthStore } from "@/store/auth.ts";
 
+import { useSpinner } from "@/context/SpinnerContext.tsx";
 import { cn } from "@/lib/utils"
 
 const formSchema = z.object({
@@ -22,7 +25,9 @@ export function LoginForm({
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
 
-  const { login } = useAuthStore()
+  const { setLoading } = useSpinner();
+  const navigate = useNavigate();
+  const { isAuthenticated, login } = useAuthStore()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,8 +37,22 @@ export function LoginForm({
   })
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await login(values)
+    try {
+      setLoading(true);
+      await login(values);
+      navigate('/dashboard')
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/dashboard');
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
