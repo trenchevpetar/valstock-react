@@ -1,11 +1,14 @@
-import { LoginPage } from "@/pages/LoginPage.tsx";
-import { DashboardPage } from "@/pages/DashboardPage.tsx";
-import { Toaster } from "@/components/ui/toaster.tsx";
-import { ThemeProvider } from "@/features/ThemeSelector/theme-provider.tsx";
-import { ToggleTheme } from "@/features/ThemeSelector/toggle-theme.tsx";
 import { Routes, Route } from "react-router-dom";
 
+import { Toaster } from "@/components/ui/toaster.tsx";
+
+import { ThemeProvider } from "@/features/ThemeSelector/theme-provider.tsx";
+import { ToggleTheme } from "@/features/ThemeSelector/toggle-theme.tsx";
+
 import { useAuthStore } from "@/store/auth.ts";
+
+import { DashboardPage } from "@/pages/DashboardPage.tsx";
+import { LoginPage } from "@/pages/LoginPage.tsx";
 
 import './App.css'
 

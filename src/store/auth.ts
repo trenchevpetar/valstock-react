@@ -1,6 +1,7 @@
-import { create } from "zustand/react";
-import { users } from "@/db/users.ts";
 import { persist } from "zustand/middleware";
+import { create } from "zustand/react";
+
+import { users } from "@/db/users.ts";
 import { User } from "@/db/users.ts";
 
 type Store = {
