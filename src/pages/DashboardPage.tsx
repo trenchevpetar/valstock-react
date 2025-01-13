@@ -6,7 +6,6 @@ import { useAuthStore } from "@/store/auth.ts";
 
 import { useSpinner } from "@/context/SpinnerContext.tsx";
 
-
 export const DashboardPage = () => {
   const { setLoading } = useSpinner();
   const { logout } = useAuthStore();

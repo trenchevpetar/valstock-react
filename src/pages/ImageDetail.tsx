@@ -11,7 +11,6 @@ import {
   CardTitle
 } from "@/components/ui/card.tsx";
 
-
 import { useImagesStore } from "@/store/images.ts";
 import { Image } from "@/store/images.ts";
 
