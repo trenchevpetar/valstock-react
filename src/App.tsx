@@ -16,10 +16,8 @@ function App() {
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         {isAuthenticated ? <ToggleTheme /> : null}
-        <div className="flex min-h-svh min-w-full items-center justify-center">
-          <div className="w-full max-w-sm">
-            <AppRoutes />
-          </div>
+        <div className="app">
+          <AppRoutes />
         </div>
         <Toaster/>
       </ThemeProvider>

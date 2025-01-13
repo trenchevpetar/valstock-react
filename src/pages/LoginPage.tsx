@@ -1,5 +1,5 @@
 import { LoginForm } from "@/features/Login/LoginForm.tsx";
 
-export function LoginPage () {
+export const LoginPage = () => {
   return <LoginForm />
 }

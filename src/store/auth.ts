@@ -40,7 +40,7 @@ export const useAuthStore = create<Store>()(
       }
     }),
     {
-      name: 'food-storage',
+      name: 'auth-storage',
     },
   ),
 )

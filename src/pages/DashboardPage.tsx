@@ -1,10 +1,13 @@
 import { Button } from "@/components/ui/button.tsx";
 
+import { ImageGrid } from "@/features/ImageGrid/ImageGrid.tsx";
+
 import { useAuthStore } from "@/store/auth.ts";
 
 import { useSpinner } from "@/context/SpinnerContext.tsx";
 
-export function DashboardPage () {
+
+export const DashboardPage = () => {
   const { setLoading } = useSpinner();
   const { logout } = useAuthStore();
 
@@ -23,6 +26,7 @@ export function DashboardPage () {
     <>
       <h1>Dashboard Page</h1>
       <Button onClick={handleLogout}>Logout</Button>
+      <ImageGrid />
     </>
   )
 }
