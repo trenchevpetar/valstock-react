@@ -3,21 +3,30 @@ import { create } from "zustand/react";
 
 const imageURL = 'https://picsum.photos/v2/list'
 
+import { currentQuality } from "@/features/ImageGrid/utils/currentQuality.ts";
+import { QualityItemType } from "@/features/ImageGrid/utils/types.ts";
+
 export interface Image {
   id: number;
   author: string;
   width: string;
   height: string;
   url: string;
-  download_url: string;
+  download_url: string | undefined;
+  currentQuality: QualityItemType;
 }
 
 type Store = {
   images: Array<Image>;
   fetchAndStoreImages: () => Promise<void>;
   getImageById: (id: string | number | undefined) => object | undefined;
+  updateCurrentQuality: (id: string | number | undefined, newQuality: QualityItemType) => void;
   isLoading: boolean;
   error: string | unknown;
+}
+
+const createDownloadUrl = (imageURL: string | undefined, width: number | string, height: number | string) => {
+  if (imageURL) return imageURL.replace(/(\d+)\/(\d+)$/, `${width}/${height}`);
 }
 
 export const useImagesStore = create<Store>()(
@@ -32,7 +41,16 @@ export const useImagesStore = create<Store>()(
             set({ images: [], error: "Failed to fetch data" })
           } else {
             const result = await response.json();
-            set({ images: result })
+            const newResult = result.map((res: Image) => ({
+              ...res,
+              currentQuality: {
+                ...currentQuality,
+                download_url: createDownloadUrl(res.download_url, res.width, res.height)
+              }
+            }))
+            set({
+              images: newResult
+            })
           }
         } catch (err: unknown) {
           set({ error: err, isLoading: false })
@@ -44,6 +62,26 @@ export const useImagesStore = create<Store>()(
         const { images } = get();
 
         return images.find((image) => image.id === id)
+      },
+      updateCurrentQuality: (id: string | number | undefined, newQuality: QualityItemType) => {
+        const { images } = get();
+
+        if (id) {
+          const updatedImages = images.map((image) => {
+            if (image.id === id) {
+              return {
+                ...image,
+                currentQuality: {
+                  ...newQuality,
+                  download_url: createDownloadUrl(image.download_url, newQuality.width, newQuality.height)
+                }
+              }
+            }
+            return image;
+          });
+
+          set({ images: updatedImages })
+        }
       },
       isLoading: false,
       error: null
