@@ -9,6 +9,7 @@ import { QualityItemType } from "@/features/ImageGrid/utils/types.ts";
 import { useImagesStore } from "@/store/images.ts";
 
 import './image-grid.css';
+import { AddToAlbum } from "@/features/Albums/AddToAlbum.tsx";
 
 export const ImageGrid = () => {
   const { fetchAndStoreImages, updateCurrentQuality, images, error, isLoading } = useImagesStore();
@@ -51,6 +52,7 @@ export const ImageGrid = () => {
             </figure>
           </Link>
           <QualityPicker onQualityChange={(data) => onQualityChange(item.id, data)} />
+          <AddToAlbum image={item} />
         </li>
       })}
     </ul>

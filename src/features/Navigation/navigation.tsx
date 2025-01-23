@@ -11,11 +11,7 @@ import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu"
 import { Logout } from "@/features/Logout/logout.tsx";
 import { ToggleTheme } from "@/features/ThemeSelector/toggle-theme.tsx";
 
-import { useAuthStore } from "@/store/auth.ts";
-
 export const Navigation = () => {
-  const { isAuthenticated } = useAuthStore();
-
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -26,11 +22,14 @@ export const Navigation = () => {
           <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
             <Link to="/dashboard">Dashboard</Link>
           </NavigationMenuLink>
+          <NavigationMenuLink className={navigationMenuTriggerStyle()} asChild>
+            <Link to="/albums">Albums</Link>
+          </NavigationMenuLink>
           <NavigationMenuLink>
             <Logout />
           </NavigationMenuLink>
           <NavigationMenuLink>
-            {isAuthenticated ? <ToggleTheme /> : null}
+            <ToggleTheme />
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>

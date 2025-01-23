@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card.tsx";
 
 import { useImagesStore } from "@/store/images.ts";
-import { Image } from "@/store/images.ts";
+import { Image } from "@/store/types/images.types.ts";
 
 export const ImageDetail = () => {
   const [imageById, setImageById] = useState<Partial<Image>>({});

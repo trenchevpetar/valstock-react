@@ -11,7 +11,7 @@ function App() {
     <>
       <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
         <AppRoutes />
-        <Toaster/>
+        <Toaster />
       </ThemeProvider>
     </>
   )

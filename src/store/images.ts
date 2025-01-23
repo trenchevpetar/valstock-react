@@ -6,15 +6,7 @@ const imageURL = 'https://picsum.photos/v2/list'
 import { currentQuality } from "@/features/ImageGrid/utils/currentQuality.ts";
 import { QualityItemType } from "@/features/ImageGrid/utils/types.ts";
 
-export interface Image {
-  id: number;
-  author: string;
-  width: string;
-  height: string;
-  url: string;
-  download_url: string | undefined;
-  currentQuality: QualityItemType;
-}
+import { Image } from "@/store/types/images.types.ts"
 
 type Store = {
   images: Array<Image>;

@@ -6,6 +6,7 @@ import { Navigation } from "@/features/Navigation/navigation.tsx";
 
 import { useAuthStore } from "@/store/auth.ts";
 
+import { AlbumsPage } from "@/pages/AlbumsPage.tsx";
 import { DashboardPage } from "@/pages/DashboardPage.tsx";
 import { ImageDetail } from "@/pages/ImageDetail.tsx";
 import { LoginPage } from "@/pages/LoginPage.tsx";
@@ -26,6 +27,9 @@ const AppRoutes = () => {
           <Routes>
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<DashboardPage />} />
+            </Route>
+            <Route element={<ProtectedRoute />}>
+              <Route path="/albums" element={<AlbumsPage />} />
             </Route>
             <Route element={<ProtectedRoute />}>
               <Route path="/image-detail/:id" element={<ImageDetail />} />
