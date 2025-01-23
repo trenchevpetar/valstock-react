@@ -47,7 +47,7 @@ export const AlbumSnap = () => {
     }
   }
 
-  const handleRemoveFromAlbum = (albumId: string | number, imageId: string | number) => {
+  const handleRemoveFromAlbum = (albumId: string | number | undefined, imageId: string | number) => {
     deleteImageFromAlbum(albumId, imageId)
   }
 

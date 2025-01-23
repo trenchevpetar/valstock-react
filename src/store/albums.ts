@@ -8,7 +8,7 @@ type Store = {
   albums: Array<Album>,
   createNewAlbum: (album: Album) => void;
   deleteAlbum: (albumId: string | number) => void;
-  deleteImageFromAlbum: (albumId: string | number, imageId: string | number) => void;
+  deleteImageFromAlbum: (albumId: string | number | undefined, imageId: string | number) => void;
   addImageToExistingAlbum: (
     albumId: string,
     image: Image,
