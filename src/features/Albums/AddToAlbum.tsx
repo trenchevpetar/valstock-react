@@ -25,11 +25,7 @@ export const AddToAlbum = ({ image }: { image: Image }) => {
       checked ? [...prevSelected, id] : prevSelected.filter((albumId) => albumId !== id)
     );
 
-    addImageToExistingAlbum(id, image, (toastObject) => {
-      toast(toastObject)
-    }, (toastObject) => {
-      toast(toastObject)
-    })
+    addImageToExistingAlbum(id, image, (toastObject) => toast(toastObject))
   };
 
   return (

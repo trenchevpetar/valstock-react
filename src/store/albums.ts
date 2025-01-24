@@ -4,16 +4,21 @@ import { create } from "zustand/react";
 import { Album } from "@/store/types/albums.types.ts";
 import { Image } from "@/store/types/images.types.ts";
 
+type ToastCallback = (toastObject: object) => void;
+
 type Store = {
   albums: Array<Album>,
   createNewAlbum: (album: Album) => void;
-  deleteAlbum: (albumId: string | number) => void;
-  deleteImageFromAlbum: (albumId: string | number | undefined, imageId: string | number) => void;
+  deleteAlbum: (albumId: string | number | undefined) => void;
+  deleteImageFromAlbum: (
+    albumId: string | number | undefined,
+    imageId: string | number,
+    onStateChange: ToastCallback,
+  ) => void;
   addImageToExistingAlbum: (
     albumId: string,
     image: Image,
-    errorCallback: (toastObject: object) => void,
-    successCallback: (toastObject: object) => void
+    onStateChange: ToastCallback,
   ) => void;
 }
 
@@ -43,7 +48,7 @@ export const useAlbumsStore = create<Store>()(
 
         set({ albums: updatedAlbums })
       },
-      deleteImageFromAlbum: (albumId, imageId) => {
+      deleteImageFromAlbum: (albumId, imageId, onStateChange) => {
         const { albums } = get();
         const album = albums.find((album) => album.id === albumId);
 
@@ -56,14 +61,21 @@ export const useAlbumsStore = create<Store>()(
                   images: album.images.filter((image) => image.id !== imageId),
                 };
               }
+              onStateChange({
+                title: 'Successfully deleted the image from the album',
+                variant: 'destructive'
+              })
               return album;
             }),
           });
         } else {
-          console.error(`Album with id "${albumId}" not found.`);
+          onStateChange({
+            title: `Album with id "${albumId}" not found.`,
+            variant: 'destructive'
+          })
         }
       },
-      addImageToExistingAlbum: (albumId, image, errorCallback, successCallback) => {
+      addImageToExistingAlbum: (albumId, image, onStateChange) => {
         const { albums } = get();
         const album = albums.find((album) => album.id === albumId);
 
@@ -73,14 +85,14 @@ export const useAlbumsStore = create<Store>()(
               if (album.id === albumId) {
                 const isImageAlreadyAdded = album.images?.some((img) => img.id === image.id);
                 if (isImageAlreadyAdded) {
-                  errorCallback({
+                  onStateChange({
                     title: `This image is already added to album "${album.name}".`,
                     variant: 'destructive'
                   })
                   return album;
                 }
 
-                successCallback({
+                onStateChange({
                   title: `Successfully added image to ${album.name}`
                 })
                 return {
@@ -92,7 +104,10 @@ export const useAlbumsStore = create<Store>()(
             })
           })
         } else {
-          console.error(`Album with id "${albumId}" not found.`);
+          onStateChange({
+            title: `Album with id "${albumId}" not found.`,
+            variant: 'destructive'
+          })
         }
       }
     }),

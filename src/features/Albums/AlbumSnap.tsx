@@ -6,11 +6,14 @@ import { Button } from "@/components/ui/button.tsx";
 import { useAlbumsStore } from "@/store/albums.ts";
 import { Image } from "@/store/types/images.types.ts";
 
+import { useToast } from "@/hooks/use-toast.ts";
+
 import './album-snap.css';
 
 export const AlbumSnap = () => {
   const containerRef = useRef<HTMLDivElement[]>([]);
-  const { albums, deleteImageFromAlbum } = useAlbumsStore();
+  const { albums, deleteImageFromAlbum, deleteAlbum } = useAlbumsStore();
+  const { toast } = useToast()
 
   const handleScroll = (index: number, direction: 'next' | 'prev') => {
     const container = containerRef.current[index]
@@ -48,7 +51,11 @@ export const AlbumSnap = () => {
   }
 
   const handleRemoveFromAlbum = (albumId: string | number | undefined, imageId: string | number) => {
-    deleteImageFromAlbum(albumId, imageId)
+    deleteImageFromAlbum(albumId, imageId, (toastObject) => toast(toastObject))
+  }
+
+  const handleRemoveAlbum = (albumId: string | undefined) => {
+    deleteAlbum(albumId)
   }
 
   return (
@@ -57,7 +64,15 @@ export const AlbumSnap = () => {
         return (
           <ul className="album-snap">
             <li key={index}>
-              <h1 className="text-3xl pb-4 font-semibold">Album name: {album.name}</h1>
+              <h1 className="text-3xl pb-4 font-semibold">
+                Album name: {album.name}
+                <Button
+                  variant="destructive"
+                  onClick={() => handleRemoveAlbum(album.id)}
+                >
+                  Remove this album
+                </Button>
+              </h1>
               <div className="album-track-wrapper">
                 <div className="album-track" ref={addToRefs}>
                   {album?.images.map((image: Image) => {
